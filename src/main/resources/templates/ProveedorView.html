@@ -10,7 +10,7 @@
 
 <div class="container">
     <h1>Formulario de Proveedor</h1>
-    <form th:action="@{/proveedores/save}" method="post">
+    <form class="row g-3 needs-validation" th:action="@{/proveedor/fileUpload}"  method="post">
         <div class="form-group">
             <label for="id">ID:</label>
             <input type="text" class="form-control" id="id" name="id" required>
