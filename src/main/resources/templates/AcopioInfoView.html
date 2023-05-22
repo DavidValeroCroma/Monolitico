@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <title>Listado de Acopios</title>
+  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">MilkStgo</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/proveedor"> Proveedores </span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/acopio/fileUpload">Acopios</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Reporte Quincenal</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Pagos</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <h1>Listado de Acopios</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>ID Proveedor</th>
+      <th>Fecha</th>
+      <th>Turno</th>
+      <th>Leche</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="acopio : ${acopios}">
+      <td th:text="${acopio.id}"></td>
+      <td th:text="${acopio.idProveedor}"></td>
+      <td th:text="${#dates.format(acopio.fecha, 'dd/MM/yyyy')}"></td>
+      <td th:text="${acopio.turno}"></td>
+      <td th:text="${acopio.leche}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</body>
+</html>
