@@ -11,4 +11,5 @@ public class ProveedorController {
     @GetMapping
     public String accessToProviderView(){return "ProveedorView";}
 
+
 }

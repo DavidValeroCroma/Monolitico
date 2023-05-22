@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Subir archivo CSV</title>
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div th:replace="~{NavBar.html}"></div>
+<div class="container">
+    <h1>Subir archivo CSV</h1>
+    <form th:action="@{/upload-csv}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="csvFile">Selecciona un archivo CSV:</label>
+            <input type="file" class="form-control-file" id="csvFile" name="csvFile" accept=".csv" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Subir archivo</button>
+    </form>
+</div>
+<script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

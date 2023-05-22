@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Listado de Reportes</title>
+  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div th:replace="~{NavBar.html}"></div>
+<div class="container">
+  <h1>Listado de Reportes</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>ID Proveedor</th>
+      <th>Leche</th>
+      <th>Quincena</th>
+      <th>Mes</th>
+      <th>Año</th>
+      <th>Sólidos</th>
+      <th>Grasa</th>
+      <th>Variación Sólidos</th>
+      <th>Variación Grasa</th>
+      <th>Variación Cantidad de Leche</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="reporte : ${reportes}">
+      <td th:text="${reporte.id}"></td>
+      <td th:text="${reporte.idProveedor}"></td>
+      <td th:text="${reporte.leche}"></td>
+      <td th:text="${reporte.quincena}"></td>
+      <td th:text="${reporte.mes}"></td>
+      <td th:text="${reporte.anio}"></td>
+      <td th:text="${reporte.solidos}"></td>
+      <td th:text="${reporte.grasa}"></td>
+      <td th:text="${reporte.varSolidos}"></td>
+      <td th:text="${reporte.varGrasa}"></td>
+      <td th:text="${reporte.varCantLeche}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

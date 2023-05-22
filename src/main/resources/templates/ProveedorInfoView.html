@@ -2,30 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
   <meta charset="UTF-8">
-  <title>Listado de Acopios</title>
+  <title>Listado de Proveedores</title>
   <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
 <div th:replace="~{NavBar.html}"></div>
+
 <div class="container">
-  <h1>Listado de Acopios</h1>
+  <h1>Listado de Proveedores</h1>
   <table class="table">
     <thead>
     <tr>
       <th>ID</th>
-      <th>ID Proveedor</th>
-      <th>Fecha</th>
-      <th>Turno</th>
-      <th>Leche</th>
+      <th>Nombre</th>
+      <th>Categoría</th>
+      <th>Retención</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="acopio : ${acopios}">
-      <td th:text="${acopio.id}"></td>
-      <td th:text="${acopio.idProveedor}"></td>
-      <td th:text="${#dates.format(acopio.fecha, 'dd/MM/yyyy')}"></td>
-      <td th:text="${acopio.turno}"></td>
-      <td th:text="${acopio.leche}"></td>
+    <tr th:each="proveedor : ${proveedores}">
+      <td th:text="${proveedor.id}"></td>
+      <td th:text="${proveedor.nombre}"></td>
+      <td th:text="${proveedor.categoria}"></td>
+      <td th:text="${proveedor.retencion}"></td>
     </tr>
     </tbody>
   </table>
