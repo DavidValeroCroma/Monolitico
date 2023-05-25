@@ -46,6 +46,7 @@ public class PagoService {
             pagoLeche = leche * 250;
 
         }
+        System.out.println( pagoLeche);
 
         nuevoPago.setPagoLeche(pagoLeche);
 
@@ -81,6 +82,8 @@ public class PagoService {
         //Sacamos el pago por acopio de leche
 
         double bonificacion = pagoLeche * acopioService.bonificacionCons(idProveedor);
+
+        nuevoPago.setBonoFrec(bonificacion);
 
         double pagoAcopioLeche = pagoLeche + pagoGrasa + pagoSolidos + bonificacion;
 
@@ -129,10 +132,14 @@ public class PagoService {
         nuevoPago.setPagoTotal(pagoTotal);
 
         double pagoFinal = pagoTotal;
+        double retencion = 0;
 
         if (proveedorAux.getRetencion() == true && pagoTotal > 950000){
-            pagoFinal = pagoTotal - 0.13*pagoTotal;
+            retencion = 0.13*pagoTotal;
+            pagoFinal = pagoTotal - retencion;
         }
+
+        nuevoPago.setMontoRet(retencion);
 
         nuevoPago.setPagoFinal(pagoFinal);
 
