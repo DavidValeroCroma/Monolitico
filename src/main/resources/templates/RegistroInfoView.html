@@ -23,10 +23,12 @@
       <th>Variación Sólidos</th>
       <th>Variación Grasa</th>
       <th>Variación Cantidad de Leche</th>
+      <th>Promedio de Leche</th>
+      <th>Cantidad de Dias</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="reporte : ${reportes}">
+    <tr th:each="reporte : ${reporte}">
       <td th:text="${reporte.id}"></td>
       <td th:text="${reporte.idProveedor}"></td>
       <td th:text="${reporte.leche}"></td>
@@ -38,6 +40,8 @@
       <td th:text="${reporte.varSolidos}"></td>
       <td th:text="${reporte.varGrasa}"></td>
       <td th:text="${reporte.varCantLeche}"></td>
+      <td th:text="${reporte.promedioLeche}"></td>
+      <td th:text="${reporte.nroDias}"></td>
     </tr>
     </tbody>
   </table>

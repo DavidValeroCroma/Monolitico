@@ -26,4 +26,6 @@ public class ReporteEntity {
     private Double varSolidos;
     private Double varGrasa;
     private Double varCantLeche;
+    private Double promedioLeche;
+    private Integer nroDias;
 }

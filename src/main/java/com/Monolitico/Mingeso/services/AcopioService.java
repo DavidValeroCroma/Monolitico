@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.PublicKey;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +28,7 @@ public class AcopioService {
 
     private final Logger logg = LoggerFactory.getLogger(AcopioService.class);
 
-    public ArrayList<AcopioEntity> obtenerAcopio() {
+    public ArrayList<AcopioEntity> obtenerAcopios() {
         return (ArrayList<AcopioEntity>) acopioRepository.findAll();
     }
 
@@ -35,24 +36,13 @@ public class AcopioService {
         return acopioRepository.findByIdProveedor(idProveedor);
     }
 
-    public ArrayList<AcopioEntity> obtenerAcopioPorQuincena(String idProveedor, Integer quincena, Integer mes, Integer anio){
-        ArrayList<AcopioEntity> acopiosQuincena = new ArrayList<>();
-        ArrayList<AcopioEntity> totalAcopio = obtenerAcopioPorProveedor(idProveedor);
-
-        for (AcopioEntity acopio: totalAcopio){
-            if (quincena == 1 && acopio.getFecha().getDay() < 15 && acopio.getFecha().getDay() > 0 && acopio.getFecha().getMonth() == mes && acopio.getFecha().getYear() == anio){
-                acopiosQuincena.add(acopio);
-            }
-            if (quincena == 2 && acopio.getFecha().getDay() < 32 && acopio.getFecha().getDay() > 15 && acopio.getFecha().getMonth() == mes && acopio.getFecha().getYear() == anio){
-                acopiosQuincena.add(acopio);
-            }
-        }
-        return acopiosQuincena;
+    public boolean exiteAlguno(String idProvedor){
+        return acopioRepository.existsAny(idProvedor);
     }
 
-    public Double totalLecheQuincena(Integer quincena, Integer mes, Integer anio, String idProveedor){
+    public Double totalLecheQuincena(String idProveedor){
 
-        ArrayList<AcopioEntity> acopioQuincena = obtenerAcopioPorQuincena(idProveedor, quincena, mes, anio);
+        ArrayList<AcopioEntity> acopioQuincena = obtenerAcopioPorProveedor(idProveedor);
         double acum = 0;
 
         for (AcopioEntity acopio:acopioQuincena){
@@ -60,6 +50,79 @@ public class AcopioService {
         }
 
         return acum;
+    }
+
+    public Date conseguirFechaAcopios(String proveedor){
+        AcopioEntity acopioAux = acopioRepository.getTopByIdProveedor(proveedor);
+        return acopioAux.getFecha();
+    }
+
+    public int cantDias(String idProveedor){
+        ArrayList<AcopioEntity> acopios = obtenerAcopioPorProveedor(idProveedor);
+        int acum = 0;
+        Date fechaAnt = new Date();
+        for (AcopioEntity acopio: acopios){
+            if (acopio.getFecha() != fechaAnt){
+                acum = acum + 1;
+            }
+            fechaAnt = acopio.getFecha();
+        }
+        return acum;
+    }
+
+    public Double bonificacionCons(String idProveedor){
+
+        int diasSeguidos = 0;
+        int diasTardeSeguidos = 0;
+        int diasMañanaSeguidos = 0;
+        Character turnoPrevio = 'O';
+        Character turnoDiaPrevio = 'O';
+        int diaPrevio = 200;
+
+        if(acopioRepository.existsAny(idProveedor)) {
+            ArrayList<AcopioEntity> acopios = obtenerAcopioPorProveedor(idProveedor);
+            //calculamos los dias y/o turnos seguidos
+            for (AcopioEntity acopio : acopios) {
+
+                if (acopio.getFecha().getDay() == diaPrevio + 1) {
+                    if ((turnoPrevio == 'M' || turnoDiaPrevio == 'M') && acopio.getTurno() == 'M') {
+                        diasMañanaSeguidos = diasMañanaSeguidos + 1;
+                    } else if ((turnoPrevio == 'T' || turnoDiaPrevio == 'T') && acopio.getTurno() == 'T') {
+                        diasTardeSeguidos = diasTardeSeguidos + 1;
+                    } else {
+                        diasMañanaSeguidos = 0;
+                        diasTardeSeguidos = 0;
+                    }
+
+                } else if (acopio.getFecha().getDay() == diaPrevio) {
+                    if (turnoPrevio == 'M' && acopio.getTurno() == 'T') {
+                        diasSeguidos = diasSeguidos + 1;
+                    }
+                } else {
+                    diasSeguidos = 0;
+                    diasMañanaSeguidos = 0;
+                    diasTardeSeguidos = 0;
+                }
+
+                turnoDiaPrevio = turnoPrevio;
+                turnoPrevio = acopio.getTurno();
+                diaPrevio = acopio.getFecha().getDay();
+
+            }
+        }
+        //Vemos cual es la bonificación que le corresponde
+
+        if(diasSeguidos >= 10){
+            return 0.2;
+
+        }else if(diasMañanaSeguidos >= 10){
+            return 0.12;
+
+        }else if(diasTardeSeguidos >= 10){
+            return 0.08;
+        }
+        return  0.0;
+
     }
 
     @Generated
@@ -91,11 +154,12 @@ public class AcopioService {
 
     public void guardarDataDB(String fecha, String turno, String proveedor, String klsLeche){
         AcopioEntity newAcopio = new AcopioEntity();
-
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+        System.out.println(fecha);
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         Date fechaAux = null;
         try{
             fechaAux = formato.parse(fecha);
+
             newAcopio.setFecha(fechaAux);
             newAcopio.setIdProveedor(proveedor);
             newAcopio.setTurno(turno.charAt(0));

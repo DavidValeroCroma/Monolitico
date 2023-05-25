@@ -33,7 +33,7 @@ public class AcopioController {
 
     @GetMapping("/acopio/fileInformation")
     public String listar(Model model){
-        ArrayList<AcopioEntity> acopios = acopioService.obtenerAcopio();
+        ArrayList<AcopioEntity> acopios = acopioService.obtenerAcopios();
         model.addAttribute("acopios", acopios);
         return "AcopioInfoView";
     }

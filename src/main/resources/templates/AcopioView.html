@@ -9,17 +9,17 @@
 <body>
 
 <div th:replace="~{NavBar.html}"></div>
+<div class="container">
+    <h1> Seleccione el archivo con los acopios respectivos </h1>
 
-<h1> Seleccione el archivo con los acopios respectivos </h1>
-
-<form enctype="multipart/form-data" method="POST" th:action="@{/acopio/fileUpload}">
-    <br>
-    <input type="file" class="form-control" name="file" accept = ".csv">
-    <br>
-    <input class = "btn btn-primary"
-           type="submit" value="Cargar el archivo a la Base de Datos">
-</form>
-
+    <form enctype="multipart/form-data" method="POST" th:action="@{/acopio/fileUpload}">
+        <br>
+        <input type="file" class="form-control" name="file" accept = ".csv">
+        <br>
+        <input class = "btn btn-primary"
+               type="submit" value="Cargar el archivo a la Base de Datos">
+    </form>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>

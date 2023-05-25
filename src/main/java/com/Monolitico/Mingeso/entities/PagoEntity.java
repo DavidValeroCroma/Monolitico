@@ -19,4 +19,7 @@ public class PagoEntity {
     private String idProveedor;
     private Long idReporte;
     private Integer quincena;
+    private Double pagoFinal;
+    private Double descVarGrasa;
+    private Double descVarSol;
 }

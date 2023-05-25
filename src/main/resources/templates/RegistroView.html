@@ -9,12 +9,12 @@
 <div th:replace="~{NavBar.html}"></div>
 <div class="container">
     <h1>Subir archivo CSV</h1>
-    <form th:action="@{/upload-csv}" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="csvFile">Selecciona un archivo CSV:</label>
-            <input type="file" class="form-control-file" id="csvFile" name="csvFile" accept=".csv" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Subir archivo</button>
+    <form enctype="multipart/form-data" method="POST" th:action="@{/reporte/fileUpload}">
+        <br>
+        <input type="file" class="form-control" name="file" accept = ".csv">
+        <br>
+        <input class = "btn btn-primary"
+               type="submit" value="Cargar el archivo a la Base de Datos">
     </form>
 </div>
 <script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
