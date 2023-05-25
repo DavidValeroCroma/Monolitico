@@ -23,6 +23,8 @@ public class ReporteEntity {
     private Integer anio;
     private Double solidos;
     private Double grasa;
+    private Double porSolidos;
+    private Double porGrasa;
     private Double varSolidos;
     private Double varGrasa;
     private Double varCantLeche;

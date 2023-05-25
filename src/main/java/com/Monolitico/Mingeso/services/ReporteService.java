@@ -28,6 +28,9 @@ public class ReporteService {
     @Autowired
     AcopioService acopioService;
 
+    @Autowired
+    PagoService pagoService;
+
     private final Logger logg = LoggerFactory.getLogger(ReporteService.class);
 
     public ArrayList<ReporteEntity> obtenerQuincenas(){
@@ -79,11 +82,13 @@ public class ReporteService {
         Double cantLeche = 0.0;
         Integer cantDias = 0;
         Double promLeche = 0.0;
+        Double solidos = 0.0;
+        Double  grasas= 0.0;
         ReporteEntity newReporte = new ReporteEntity();
 
         newReporte.setIdProveedor(proveedor);
-        newReporte.setGrasa(Double.parseDouble(grasa));
-        newReporte.setSolidos(Double.parseDouble(solido));
+        newReporte.setPorGrasa(Double.parseDouble(grasa));
+        newReporte.setPorSolidos(Double.parseDouble(solido));
 
         //sacamos la info de los acopios
         if(acopioService.exiteAlguno(proveedor)) {
@@ -92,6 +97,8 @@ public class ReporteService {
             cantLeche = acopioService.totalLecheQuincena(proveedor);
             cantDias = acopioService.cantDias(proveedor);
             promLeche = cantLeche/cantDias;
+            solidos = (cantLeche * newReporte.getPorSolidos())/100;
+            grasas = (cantLeche * newReporte.getPorGrasa())/100;
 
 
             if (fechaAux.getDate() > 15) {
@@ -116,15 +123,28 @@ public class ReporteService {
             newReporte.setAnio(fechaActual.getYear()+1900);
 
         }
+        newReporte.setSolidos(solidos);
+        newReporte.setGrasa(grasas);
 
         newReporte.setLeche(cantLeche);
         newReporte.setNroDias(cantDias);
         newReporte.setPromedioLeche(promLeche);
 
+        //eliminamos los reportes repetidos de haber alguno
+        if(existeAlgunRep(proveedor)){
+            ArrayList<ReporteEntity> reportes = obtenerQuincenasPorProveedor(proveedor);
+            for (ReporteEntity reporte: reportes){
+
+                if(reporte.getAnio().equals(newReporte.getAnio())  &&   (reporte.getMes().equals(newReporte.getMes()))  && (reporte.getQuincena().equals(newReporte.getQuincena()))){
+                    reporteRepository.delete(reporte);
+                }
+            }
+        }
+
         //comparamos con el reporte anterior
         if (existeAlgunRep(proveedor)) {
-            ReporteEntity reporteAnterior = obtenerUltimoReporte(proveedor);
 
+            ReporteEntity reporteAnterior = obtenerUltimoReporte(proveedor);
             newReporte.setVarGrasa((Double.parseDouble(grasa) - reporteAnterior.getGrasa()) / reporteAnterior.getGrasa());
             newReporte.setVarSolidos((Double.parseDouble(solido) - reporteAnterior.getSolidos()) / reporteAnterior.getSolidos());
             newReporte.setVarCantLeche((cantLeche - reporteAnterior.getLeche())/reporteAnterior.getLeche());
@@ -135,6 +155,10 @@ public class ReporteService {
         }
 
         guardarData(newReporte);
+
+        pagoService.generarPago(newReporte.getId(),newReporte.getIdProveedor(),newReporte.getLeche(),newReporte.getQuincena(),newReporte.getMes(),newReporte.getAnio(),newReporte.getSolidos(),newReporte.getGrasa(),newReporte.getVarSolidos(),newReporte.getVarGrasa(),newReporte.getVarCantLeche(),newReporte.getPromedioLeche(), newReporte.getPorGrasa(),newReporte.getPorSolidos());
+
+
     }
     public void eliminarData(ArrayList<ReporteEntity> datas){
         reporteRepository.deleteAll(datas);

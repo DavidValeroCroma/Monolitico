@@ -19,7 +19,17 @@ public class PagoEntity {
     private String idProveedor;
     private Long idReporte;
     private Integer quincena;
-    private Double pagoFinal;
+    private Integer mes;
+    private Integer anio;
+    private Double pagoTotal;
+    private Double pagoLeche;
+    private Double pagoGrasa;
+    private Double pagoSolidos;
+    private Double bonoFrec;
+    private Double descVarLeche;
     private Double descVarGrasa;
     private Double descVarSol;
+    private Double montoRet;
+    private Double pagoFinal;
+
 }

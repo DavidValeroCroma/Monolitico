@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Vista de Pago</title>
+  <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+</head>
+<body>
+<div th:replace="~{NavBar.html}"></div>
+
+<div class="container">
+  <h1>Vista de Pago</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>ID Proveedor</th>
+      <th>ID Reporte</th>
+      <th>Quincena</th>
+      <th>Mes</th>
+      <th>Año</th>
+      <th>Pago Total</th>
+      <th>Pago Leche</th>
+      <th>Pago Grasa</th>
+      <th>Pago Sólidos</th>
+      <th>Bono Frecuencia</th>
+      <th>Descuento Var. Leche</th>
+      <th>Descuento Var. Grasa</th>
+      <th>Descuento Var. Sólidos</th>
+      <th>Monto Retención</th>
+      <th>Pago Final</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Aquí se debe iterar sobre la lista de pagos y mostrar cada entidad -->
+    <!-- Por ejemplo, se puede usar Thymeleaf para iterar con th:each -->
+    <!-- Supongamos que tienes una lista llamada "pagos" en el modelo -->
+    <tr th:each="pago : ${pagos}">
+      <td th:text="${pago.id}"></td>
+      <td th:text="${pago.idProveedor}"></td>
+      <td th:text="${pago.idReporte}"></td>
+      <td th:text="${pago.quincena}"></td>
+      <td th:text="${pago.mes}"></td>
+      <td th:text="${pago.anio}"></td>
+      <td th:text="${pago.pagoTotal}"></td>
+      <td th:text="${pago.pagoLeche}"></td>
+      <td th:text="${pago.pagoGrasa}"></td>
+      <td th:text="${pago.pagoSolidos}"></td>
+      <td th:text="${pago.bonoFrec}"></td>
+      <td th:text="${pago.descVarLeche}"></td>
+      <td th:text="${pago.descVarGrasa}"></td>
+      <td th:text="${pago.descVarSol}"></td>
+      <td th:text="${pago.montoRet}"></td>
+      <td th:text="${pago.pagoFinal}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+<script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+</body>
+</html>
